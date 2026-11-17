@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Захиалга | Удирдлагын самбар{% endblock %}
+
+{% block content %}
+  <div class="content-header">
+    <div>
+      <p class="eyebrow">ЦАГ ТОВЛОЛТ</p>
+      <h1>Захиалгууд</h1>
+      <p class="muted content-intro">Үйлчлүүлэгчдийн цагийн захиалгыг эндээс харна.</p>
+    </div>
+    {% if not error %}
+      <span class="draft-count">{{ bookings|length }} захиалга</span>
+    {% endif %}
+  </div>
+
+  {% if error %}
+    <div class="error" role="alert">{{ error }}</div>
+  {% elif bookings %}
+    <div class="table-wrap">
+      <table class="booking-table">
+        <thead>
+          <tr>
+            <th scope="col">Үйлчлүүлэгч</th>
+            <th scope="col">Үйлчилгээ</th>
+            <th scope="col">Захиалсан цаг</th>
+            <th scope="col">Төлөв</th>
+            <th scope="col">Тэмдэглэл</th>
+            <th scope="col">Үйлдэл</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in bookings %}
+            <tr>
+              <td>
+                <span class="customer-name">{{ booking.customer_name }}</span>
+                <span class="customer-email">{{ booking.customer_email }}</span>
+              </td>
+              <td>{{ booking.service_name }}</td>
+              <td class="booking-time">{{ format_date(booking.starts_at) }}</td>
+              <td>
+                <span class="status-badge status-{{ booking.status }}">
+                  {{ booking_status(booking.status) }}
+                </span>
+              </td>
+              <td class="booking-notes">{{ booking.notes or "—" }}</td>
+              <td class="booking-actions">
+                {% if booking.status == "pending" %}
+                  <form method="post" action="{{ url_for('update_booking_status', booking_id=booking.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button class="action-button action-approve" type="submit"
+                            name="action" value="approve">Батлах</button>
+                    <button class="action-button action-reject" type="submit"
+                            name="action" value="reject">Татгалзах</button>
+                  </form>
+                {% else %}
+                  <span class="muted">—</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state">Одоогоор захиалга бүртгэгдээгүй байна.</div>
+  {% endif %}
+{% endblock %}

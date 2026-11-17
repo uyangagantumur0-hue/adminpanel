@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="mn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Удирдлагын самбар{% endblock %}</title>
+  <meta name="theme-color" content="#fff9f6">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=6) }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="topbar-brand" href="{{ url_for('dashboard') }}" aria-label="Самбарын нүүр">
+      <img class="topbar-logo" src="{{ url_for('static', filename='yun-logo.png') }}"
+           alt="Юн брэндийн лого">
+      <span>
+        <span class="wordmark-title">Удирдлагын самбар</span>
+        <span class="wordmark-subtitle">Эрүүл амьдрал · Монгол</span>
+      </span>
+    </a>
+    <div class="account">
+      <span class="account-email">{{ email }}</span>
+      <form method="post" action="{{ url_for('logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button class="button-secondary" type="submit">Гарах</button>
+      </form>
+    </div>
+  </header>
+
+  <div class="workspace-shell">
+    <aside class="sidebar" aria-label="Үндсэн цэс">
+      <p class="sidebar-heading">ЦЭС</p>
+      <nav class="sidebar-nav">
+        <a class="nav-link{% if active_page == 'content' %} is-active{% endif %}"
+           href="{{ url_for('dashboard') }}"
+           {% if active_page == 'content' %}aria-current="page"{% endif %}>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 4.75h14a1.25 1.25 0 0 1 1.25 1.25v12A1.25 1.25 0 0 1 19 19.25H5A1.25 1.25 0 0 1 3.75 18V6A1.25 1.25 0 0 1 5 4.75Z"/>
+            <path d="M8 9h8M8 12.5h8M8 16h5"/>
+          </svg>
+          <span>Контент</span>
+        </a>
+        <a class="nav-link{% if active_page == 'facebook' %} is-active{% endif %}"
+           href="{{ url_for('facebook') }}"
+           {% if active_page == 'facebook' %}aria-current="page"{% endif %}>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M14.2 20v-7.3h2.45l.37-2.85H14.2V8.03c0-.83.23-1.4 1.42-1.4h1.52V4.08A20.3 20.3 0 0 0 14.93 4c-2.2 0-3.7 1.34-3.7 3.8v2.05H8.75v2.85h2.48V20h2.97Z"/>
+            <circle cx="12" cy="12" r="9.25"/>
+          </svg>
+          <span>Facebook</span>
+        </a>
+        <a class="nav-link{% if active_page == 'chat' %} is-active{% endif %}"
+           href="{{ url_for('chat') }}"
+           {% if active_page == 'chat' %}aria-current="page"{% endif %}>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5 8.6 8.6 0 0 1-3.37-.68L4 20l1.58-4.1A7.5 7.5 0 1 1 20 11.5Z"/>
+            <path d="M8.5 11.5h.01M12.5 11.5h.01M16.5 11.5h.01" stroke-width="2.2"/>
+          </svg>
+          <span>Чат</span>
+        </a>
+        <a class="nav-link{% if active_page == 'bookings' %} is-active{% endif %}"
+           href="{{ url_for('bookings') }}"
+           {% if active_page == 'bookings' %}aria-current="page"{% endif %}>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="4" y="5.5" width="16" height="15" rx="2"/>
+            <path d="M8 3.75v3.5M16 3.75v3.5M4 9.5h16M8 13h3M8 16.5h5"/>
+          </svg>
+          <span>Захиалга</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="workspace-content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}" role="status">{{ message }}</div>
+        {% endfor %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

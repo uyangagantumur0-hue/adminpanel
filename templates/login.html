@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="mn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Нэвтрэх | Удирдлагын самбар</title>
+  <meta name="theme-color" content="#fff9f6">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=4) }}">
+</head>
+<body class="login-page">
+  <main class="auth-shell">
+    <section class="brand-panel" aria-label="Юн брэнд">
+      <img class="brand-logo" src="{{ url_for('static', filename='yun-logo.png') }}"
+           alt="Юн брэндийн лого">
+      <p class="brand-caption">Тайван амьдралын орон зай</p>
+      <span class="brand-ornament" aria-hidden="true"></span>
+    </section>
+
+    <section class="form-panel">
+      <p class="eyebrow">ЮН · УДИРДЛАГЫН САМБАР</p>
+      <h1>Тавтай морил</h1>
+      <p class="intro">Үргэлжлүүлэхийн тулд бүртгэлийн мэдээллээ оруулна уу.</p>
+
+      {% if not configured %}
+        <div class="notice" role="status">
+          Supabase-ийн хаяг болон нууц түлхүүрээ <code>.env</code> файлд шалгана уу.
+          Нийтийн түлхүүрээр хувийн хүснэгтэд хандах боломжгүй.
+        </div>
+      {% endif %}
+      {% if error %}
+        <div class="error" role="alert">{{ error }}</div>
+      {% endif %}
+
+      <form class="login-form" method="post" action="{{ url_for('login') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <label for="email">И-мэйл хаяг</label>
+        <input id="email" name="email" type="email" autocomplete="username"
+               maxlength="320" placeholder="И-мэйл хаяг" required autofocus>
+
+        <label for="password">Нууц үг</label>
+        <input id="password" name="password" type="password"
+               autocomplete="current-password" placeholder="Нууц үгээ оруулна уу" required>
+
+        <button class="button-primary" type="submit">Самбарт нэвтрэх</button>
+      </form>
+      <p class="footnote">Нэвтрэх эрхийг зөвхөн самбарын эрх бүхий хэрэглэгч ашиглана.</p>
+    </section>
+  </main>
+</body>
+</html>

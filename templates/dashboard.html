@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Контент | Удирдлагын самбар{% endblock %}
+
+{% block content %}
+  <div class="content-header">
+    <div>
+      <p class="eyebrow">АГУУЛГА</p>
+      <h1>Ноорог нийтлэлүүд</h1>
+      <p class="muted content-intro">Таны бичиж буй санаанууд нэг дор.</p>
+    </div>
+    {% if not error %}
+      <span class="draft-count">{{ drafts|length }} ноорог</span>
+    {% endif %}
+  </div>
+
+  {% if error %}
+    <div class="error" role="alert">{{ error }}</div>
+  {% elif drafts %}
+    <section class="draft-list" aria-label="Ноорог нийтлэлүүд">
+      {% for draft in drafts %}
+        <article class="draft-card">
+          <div class="draft-heading">
+            <h2>{{ draft.title }}</h2>
+            <span class="badge">Ноорог</span>
+          </div>
+          <p class="draft-body">{{ draft.content }}</p>
+          <time datetime="{{ draft.created_at }}">{{ format_date(draft.created_at) }}</time>
+        </article>
+      {% endfor %}
+    </section>
+  {% else %}
+    <div class="empty-state">Одоогоор хадгалсан ноорог алга байна.</div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }} | Удирдлагын самбар{% endblock %}
+
+{% block content %}
+  <section class="coming-soon-card" aria-labelledby="coming-soon-title">
+    <span class="coming-soon-mark" aria-hidden="true">
+      {% if active_page == "facebook" %}
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M14.2 20v-7.3h2.45l.37-2.85H14.2V8.03c0-.83.23-1.4 1.42-1.4h1.52V4.08A20.3 20.3 0 0 0 14.93 4c-2.2 0-3.7 1.34-3.7 3.8v2.05H8.75v2.85h2.48V20h2.97Z"/>
+        </svg>
+      {% else %}
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5 8.6 8.6 0 0 1-3.37-.68L4 20l1.58-4.1A7.5 7.5 0 1 1 20 11.5Z"/>
+          <path d="M8.5 11.5h.01M12.5 11.5h.01M16.5 11.5h.01" stroke-width="2.2"/>
+        </svg>
+      {% endif %}
+    </span>
+    <p class="eyebrow">{{ page_title }}</p>
+    <h1 id="coming-soon-title">Удахгүй</h1>
+    <p class="muted">Энэ хэсгийг удахгүй нэмж оруулна.</p>
+  </section>
+{% endblock %}
